@@ -1,0 +1,64 @@
+---
+- name: Configure BGP on Routers
+  hosts: routers
+  become: yes
+  tasks:
+
+    - name: Configure global BGP settings for AS {{ bgp_as }}
+      frr_bgp:
+        config:
+          bgp_as: "{{ bgp_as }}"
+          router_id: "{{ router_id }}"
+          log_neighbor_changes: "{{ bgp_global_settings.log_neighbor_changes }}"
+          neighbors: "{{ bgp_neighbors }}"
+          networks: "{{ bgp_networks }}"
+          address_family:
+            - afi: ipv4
+              safi: unicast
+              redistribute:
+                - protocol: "{{ ospf_redistribute.protocol }}"
+                  id: "{{ ospf_redistribute.id }}"
+                  metric: "{{ ospf_redistribute.metric }}"
+        operation: merge
+      tags:
+        - bgp-global
+        - bgp-initial
+
+    - name: Configure IBGP neighbors for AS {{ bgp_as }}
+      frr_bgp:
+        config:
+          bgp_as: "{{ bgp_as }}"
+          neighbors: "{{ ibgp_neighbors }}"
+        operation: merge
+      tags:
+        - bgp-neighbors
+        - bgp-initial
+
+    - name: Configure BGP neighbors under address family mode
+      frr_bgp:
+        config:
+          bgp_as: "{{ bgp_as }}"
+          address_family:
+            - afi: ipv4
+              safi: multicast
+              neighbors: "{{ bgp_address_family_neighbors }}"
+        operation: merge
+      tags:
+        - bgp-address-family
+
+    - name: Configure additional root-level networks for BGP
+      frr_bgp:
+        config:
+          bgp_as: "{{ bgp_as }}"
+          networks: "{{ additional_networks }}"
+        operation: merge
+      tags:
+        - bgp-networks
+
+    - name: Remove BGP AS {{ bgp_as }} from configuration
+      frr_bgp:
+        config:
+          bgp_as: "{{ bgp_as }}"
+        operation: delete
+      tags:
+        - bgp-remove
