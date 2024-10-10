@@ -6,6 +6,7 @@ This Ansible playbook is designed to configure BGP (Border Gateway Protocol) set
 The project leverages Ansible best practices, using a directory structure that separates host-specific variables (`host_vars`) and group-wide settings (`group_vars`) for easier management. Sensitive values are securely managed using Ansible Vault.
 
 ## Project Structure
+```python
 ansible/
 ├── playbooks/
 │   └── bgp_configuration.yml  # The main playbook
@@ -14,7 +15,7 @@ ansible/
 │   └── router2.yml            # Variables for Router 2 (if any)
 └── group_vars/
     └── all.yml                # Global variables for all hosts
-
+```
 
 ### **File Descriptions:**
 - **`playbooks/bgp_configuration.yml`**: Main playbook that applies the BGP configuration to the targeted routers.
