@@ -34,8 +34,14 @@ ansible/
 - **Ansible Vault** for managing encrypted secrets
 
 ### Installation
-1. Clone the repository:
+Clone the repository:
    ```bash
    git clone https://github.com/your_username/ansible-bgp-configuration.git
    cd ansible-bgp-configuration
    ```
+
+### Running the Playbook
+To run the playbook against the defined routers, use the following command:
+```bash
+ansible-playbook -i inventory.yml playbooks/bgp_configuration.yml
+```
