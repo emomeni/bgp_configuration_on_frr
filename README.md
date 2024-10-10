@@ -45,3 +45,27 @@ To run the playbook against the defined routers, use the following command:
 ```bash
 ansible-playbook -i inventory.yml playbooks/bgp_configuration.yml
 ```
+
+### Securely Managing Sensitive Values
+This project uses Ansible Vault to manage sensitive values such as BGP passwords. To create an encrypted value, use:
+```bash
+ansible-vault encrypt_string 'your_password' --name 'password'
+```
+
+Then replace the value in the host_vars file with the encrypted string:
+```yaml
+password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256...
+```
+
+## Author
+Created by Ehsan Momeni Bashusqeh
+
+### **Key Sections:**
+- **Project Structure Overview:** Detailed directory layout for easy navigation.
+- **Installation and Setup:** Clear steps to configure and run the playbook.
+- **Usage of Tags:** Information on selectively running parts of the playbook using tags.
+- **Variable Management:** Guidance on managing variables using `host_vars` and `group_vars`.
+- **Secure Value Management:** Explains using Ansible Vault to secure sensitive data.
+
+This format should be comprehensive enough to serve as a solid foundation for your GitHub repository's documentation! Let me know if you need any other enhancements or customizations!
