@@ -1,0 +1,49 @@
+# host_vars/router1.yml
+bgp_as: 64496
+router_id: "192.0.2.1"
+
+bgp_neighbors:
+  - neighbor: 192.51.100.1
+    remote_as: 64497
+    keepalive: 120
+    holdtime: 360
+  - neighbor: 198.51.100.2
+    remote_as: 64498
+    keepalive: 120
+    holdtime: 360
+
+ibgp_neighbors:
+  - neighbor: 192.0.2.10
+    remote_as: 64496
+    password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256...
+    description: IBGP_NBR_1
+    keepalive: 120
+    holdtime: 360
+  - neighbor: 192.0.2.15
+    remote_as: 64496
+    description: IBGP_NBR_2
+    advertisement_interval: 120
+
+bgp_networks:
+  - prefix: 192.0.2.0
+    masklen: 24
+    route_map: RMAP_1
+  - prefix: 198.51.100.0
+    masklen: 24
+
+bgp_address_family_neighbors:
+  - neighbor: 203.0.113.10
+    activate: yes
+    maximum_prefix: 250
+  - neighbor: 192.0.2.15
+    activate: yes
+    route_reflector_client: True
+
+additional_networks:
+  - prefix: 203.0.113.0
+    masklen: 27
+    route_map: RMAP_1
+  - prefix: 203.0.113.32
+    masklen: 27
+    route_map: RMAP_2
