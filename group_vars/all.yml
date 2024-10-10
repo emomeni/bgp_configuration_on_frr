@@ -1,0 +1,8 @@
+# group_vars/all.yml
+bgp_global_settings:
+  log_neighbor_changes: True
+
+ospf_redistribute:
+  protocol: ospf
+  id: 223
+  metric: 10
