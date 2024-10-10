@@ -1,0 +1,11 @@
+all:
+  hosts:
+    router1:
+      ansible_host: 192.0.2.1
+      ansible_user: admin
+      ansible_password: !vault |
+        $ANSIBLE_VAULT;1.1;AES256...  # Use Ansible Vault for secure password storage
+
+    router2:
+      ansible_host: 192.0.2.2
+      ansible_user: admin
